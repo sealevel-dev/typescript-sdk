@@ -16,5 +16,11 @@
       "~/*": ["src/*"]
     }
   },
-  "include": ["src", "tsup.config.ts", "eslint.config.js", "vite.config.ts"]
+  "include": [
+    "src",
+    "codegen",
+    "tsup.config.ts",
+    "eslint.config.js",
+    "vite.config.ts"
+  ]
 }
