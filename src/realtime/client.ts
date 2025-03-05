@@ -8,7 +8,7 @@ import { type RealtimeClientMessage } from "./types/client";
 import { type RealtimeServerMessage } from "./types/server";
 import { type RealtimeTopic } from "./types/topics";
 
-export const realtimeClientOptionsSchema = z.object({
+const realtimeClientOptionsSchema = z.object({
   apiKey: z.string(),
   url: z.string().default(REALTIME_DEFAULT_URL),
   reconnect: z.boolean().default(true),
@@ -140,4 +140,8 @@ export class RealtimeClient extends EventEmitter<RealtimeClientEvents> {
 
     this.emit("message", data);
   };
+}
+
+export function createRealtimeClient(options: RealtimeClientOptions) {
+  return new RealtimeClient(options);
 }
