@@ -36,7 +36,7 @@ export async function main() {
   const code = astToString(ast);
   await fs.promises.writeFile(
     path.join(import.meta.dirname, "..", env.OUTPUT_FILE),
-    HEADER + code
+    HEADER + code,
   );
 }
 
