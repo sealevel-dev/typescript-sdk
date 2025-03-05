@@ -26,7 +26,6 @@ const HEADER = `/**
  */
 
 /* eslint-disable */
-/* prettier-ignore */
 
 `;
 

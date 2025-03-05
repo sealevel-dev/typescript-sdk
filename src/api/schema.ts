@@ -4,7 +4,6 @@
  */
 
 /* eslint-disable */
-/* prettier-ignore */
 
 export interface paths {
     "/pools/assets": {
@@ -61,264 +60,247 @@ export interface paths {
 }
 export type webhooks = Record<string, never>;
 export interface components {
-  schemas: {
-    PoolAsset: {
-      address: string;
-      name: string;
-      symbol: string;
-      decimals: number;
-      icon_url: string | null;
-      twitter_url: string | null;
-      website_url: string | null;
-      dev: string | null;
-      price_usd: number | null;
-      price_native: number | null;
-      pool_amount: number | null;
-      circulating_supply: number | null;
-      total_supply: number | null;
-      fdv: number | null;
-      market_cap: number | null;
-      launchpad: string | null;
-      token_program_address: string;
-      dev_mint_count: number | null;
+    schemas: {
+        PoolAsset: {
+            address: string;
+            name: string;
+            symbol: string;
+            decimals: number;
+            icon_url: string | null;
+            twitter_url: string | null;
+            website_url: string | null;
+            dev: string | null;
+            price_usd: number | null;
+            price_native: number | null;
+            pool_amount: number | null;
+            circulating_supply: number | null;
+            total_supply: number | null;
+            fdv: number | null;
+            market_cap: number | null;
+            launchpad: string | null;
+            token_program_address: string;
+            dev_mint_count: number | null;
+        };
+        PartialPoolAsset: {
+            symbol: string;
+            address: string;
+            decimals: number;
+            pool_amount: number | null;
+        };
+        PoolAudit: {
+            mint_authority_disabled: boolean;
+            freeze_authority_disabled: boolean;
+            top_holders_percentage: number | null;
+            lp_burned_percentage: number | null;
+        };
+        PoolStats: {
+            price_change_percent: number;
+            buy_volume_usd: number;
+            sell_volume_usd: number;
+            buy_count: number;
+            sell_count: number;
+            trader_count: number;
+            buyer_count: number;
+            seller_count: number;
+        };
+        Pool: {
+            address: string;
+            dex: string;
+            type: string;
+            base_asset: components["schemas"]["PoolAsset"];
+            quote_asset: components["schemas"]["PartialPoolAsset"];
+            audit: components["schemas"]["PoolAudit"];
+            created_at: string;
+            liquidity: number | null;
+            stats_5m: components["schemas"]["PoolStats"];
+            stats_1h: components["schemas"]["PoolStats"];
+            stats_6h: components["schemas"]["PoolStats"];
+            stats_24h: components["schemas"]["PoolStats"];
+            bonding_curve: number | null;
+            migrated_to: string | null;
+            is_unreliable: boolean;
+            updated_at: string;
+        };
+        GetPoolsResponse: {
+            items: components["schemas"]["Pool"][];
+        };
+        BaseError: {
+            code: string;
+            message: string;
+        };
+        BadRequestError: components["schemas"]["BaseError"] & {
+            /** @enum {string} */
+            code?: "bad_request";
+            /** @enum {string} */
+            message?: "Bad request";
+        };
+        ValidatationFieldError: {
+            /** @example username */
+            path: string;
+            message: string;
+        };
+        ValidationError: components["schemas"]["BaseError"] & {
+            /** @enum {string} */
+            code?: "validation_failed";
+            /** @enum {string} */
+            message?: "Validation failed";
+            field_errors: components["schemas"]["ValidatationFieldError"][];
+        };
+        InternalServerError: components["schemas"]["BaseError"] & {
+            /** @enum {string} */
+            code?: "internal_server_error";
+            /** @enum {string} */
+            message?: "Internal server error";
+        };
+        GetRecentPoolsResponse: {
+            items: components["schemas"]["Pool"][];
+            total: number;
+            next: number;
+        };
+        /**
+         * @default created_at
+         * @enum {string}
+         */
+        RecentPoolsSortBy: "created_at" | "market_cap" | "volume_5m" | "volume_1h" | "volume_6h" | "volume_24h" | "txns_5m" | "txns_1h" | "txns_6h" | "txns_24h" | "liquidity";
+        /** @enum {string} */
+        TopTradedPoolsInterval: "5m" | "1h" | "6h" | "24h";
     };
-    PartialPoolAsset: {
-      symbol: string;
-      address: string;
-      decimals: number;
-      pool_amount: number | null;
-    };
-    PoolAudit: {
-      mint_authority_disabled: boolean;
-      freeze_authority_disabled: boolean;
-      top_holders_percentage: number | null;
-      lp_burned_percentage: number | null;
-    };
-    PoolStats: {
-      price_change_percent: number;
-      buy_volume_usd: number;
-      sell_volume_usd: number;
-      buy_count: number;
-      sell_count: number;
-      trader_count: number;
-      buyer_count: number;
-      seller_count: number;
-    };
-    Pool: {
-      address: string;
-      dex: string;
-      type: string;
-      base_asset: components["schemas"]["PoolAsset"];
-      quote_asset: components["schemas"]["PartialPoolAsset"];
-      audit: components["schemas"]["PoolAudit"];
-      created_at: string;
-      liquidity: number | null;
-      stats_5m: components["schemas"]["PoolStats"];
-      stats_1h: components["schemas"]["PoolStats"];
-      stats_6h: components["schemas"]["PoolStats"];
-      stats_24h: components["schemas"]["PoolStats"];
-      bonding_curve: number | null;
-      migrated_to: string | null;
-      is_unreliable: boolean;
-      updated_at: string;
-    };
-    GetPoolsResponse: {
-      items: components["schemas"]["Pool"][];
-    };
-    BaseError: {
-      code: string;
-      message: string;
-    };
-    BadRequestError: components["schemas"]["BaseError"] & {
-      /** @enum {string} */
-      code?: "bad_request";
-      /** @enum {string} */
-      message?: "Bad request";
-    };
-    ValidatationFieldError: {
-      /** @example username */
-      path: string;
-      message: string;
-    };
-    ValidationError: components["schemas"]["BaseError"] & {
-      /** @enum {string} */
-      code?: "validation_failed";
-      /** @enum {string} */
-      message?: "Validation failed";
-      field_errors: components["schemas"]["ValidatationFieldError"][];
-    };
-    InternalServerError: components["schemas"]["BaseError"] & {
-      /** @enum {string} */
-      code?: "internal_server_error";
-      /** @enum {string} */
-      message?: "Internal server error";
-    };
-    GetRecentPoolsResponse: {
-      items: components["schemas"]["Pool"][];
-      total: number;
-      next: number;
-    };
-    /**
-     * @default created_at
-     * @enum {string}
-     */
-    RecentPoolsSortBy:
-      | "created_at"
-      | "market_cap"
-      | "volume_5m"
-      | "volume_1h"
-      | "volume_6h"
-      | "volume_24h"
-      | "txns_5m"
-      | "txns_1h"
-      | "txns_6h"
-      | "txns_24h"
-      | "liquidity";
-    /** @enum {string} */
-    TopTradedPoolsInterval: "5m" | "1h" | "6h" | "24h";
-  };
-  responses: never;
-  parameters: never;
-  requestBodies: never;
-  headers: never;
-  pathItems: never;
+    responses: never;
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
 }
 export type $defs = Record<string, never>;
 export interface operations {
-  getAssetPools: {
-    parameters: {
-      query: {
-        /** @description List of up to 40 asset addresses to filter by. */
-        addresses: string[];
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
+    getAssetPools: {
+        parameters: {
+            query: {
+                /** @description List of up to 40 asset addresses to filter by. */
+                addresses: string[];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Ok */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetPoolsResponse"];
+                };
+            };
+            /** @description Bad request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BadRequestError"] | components["schemas"]["ValidationError"];
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InternalServerError"];
+                };
+            };
+        };
     };
-    requestBody?: never;
-    responses: {
-      /** @description Ok */
-      200: {
-        headers: {
-          [name: string]: unknown;
+    getRecentPools: {
+        parameters: {
+            query?: {
+                /** @description Only return pools created after this date, up to 24 hours ago. */
+                created_after?: string;
+                sort_by?: components["schemas"]["RecentPoolsSortBy"];
+                sort_direction?: "asc" | "desc";
+                limit?: number;
+                offset?: number | null;
+                /** @description Set to true to exclude pools for pump.fun tokens. */
+                not_pumpfun_token?: "true" | "false";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
         };
-        content: {
-          "application/json": components["schemas"]["GetPoolsResponse"];
+        requestBody?: never;
+        responses: {
+            /** @description Ok */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GetRecentPoolsResponse"];
+                };
+            };
+            /** @description Bad request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BadRequestError"] | components["schemas"]["ValidationError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InternalServerError"];
+                };
+            };
         };
-      };
-      /** @description Bad request */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json":
-            | components["schemas"]["BadRequestError"]
-            | components["schemas"]["ValidationError"];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["InternalServerError"];
-        };
-      };
     };
-  };
-  getRecentPools: {
-    parameters: {
-      query?: {
-        /** @description Only return pools created after this date, up to 24 hours ago. */
-        created_after?: string;
-        sort_by?: components["schemas"]["RecentPoolsSortBy"];
-        sort_direction?: "asc" | "desc";
-        limit?: number;
-        offset?: number | null;
-        /** @description Set to true to exclude pools for pump.fun tokens. */
-        not_pumpfun_token?: "true" | "false";
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
+    getTopTradedPools: {
+        parameters: {
+            query: {
+                interval: components["schemas"]["TopTradedPoolsInterval"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Ok */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        items: components["schemas"]["Pool"][];
+                    };
+                };
+            };
+            /** @description Bad request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BadRequestError"] | components["schemas"]["ValidationError"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InternalServerError"];
+                };
+            };
+        };
     };
-    requestBody?: never;
-    responses: {
-      /** @description Ok */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["GetRecentPoolsResponse"];
-        };
-      };
-      /** @description Bad request */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json":
-            | components["schemas"]["BadRequestError"]
-            | components["schemas"]["ValidationError"];
-        };
-      };
-      /** @description Internal Server Error */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["InternalServerError"];
-        };
-      };
-    };
-  };
-  getTopTradedPools: {
-    parameters: {
-      query: {
-        interval: components["schemas"]["TopTradedPoolsInterval"];
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Ok */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            items: components["schemas"]["Pool"][];
-          };
-        };
-      };
-      /** @description Bad request */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json":
-            | components["schemas"]["BadRequestError"]
-            | components["schemas"]["ValidationError"];
-        };
-      };
-      /** @description Internal Server Error */
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["InternalServerError"];
-        };
-      };
-    };
-  };
 }
