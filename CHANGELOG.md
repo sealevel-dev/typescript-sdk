@@ -1,5 +1,11 @@
 # @sealevel-dev/sdk
 
+## 0.0.4
+
+### Patch Changes
+
+- c7ac392: Fix API base url
+
 ## 0.0.3
 
 ### Patch Changes
