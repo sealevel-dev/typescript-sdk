@@ -1,5 +1,11 @@
 # @sealevel-dev/sdk
 
+## 0.0.5
+
+### Patch Changes
+
+- e655daf: Multi-version API support and Realtime access tokens
+
 ## 0.0.4
 
 ### Patch Changes
