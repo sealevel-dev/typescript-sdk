@@ -9,8 +9,8 @@ import { type RealtimeServerMessage } from "./types/server";
 import { type RealtimeTopic } from "./types/topics";
 
 const realtimeClientOptionsSchema = z.object({
-  apiKey: z.string(),
   url: z.string().default(REALTIME_DEFAULT_URL),
+  accessToken: z.string(),
   reconnect: z.boolean().default(true),
   reconnectInterval: z.number().default(1000),
 });
@@ -44,7 +44,7 @@ export class RealtimeClient extends EventEmitter<RealtimeClientEvents> {
     }
 
     const url = new URL(this.#options.url);
-    url.searchParams.set("api_key", this.#options.apiKey);
+    url.searchParams.set("access_token", this.#options.accessToken);
 
     this.#userDisconnected = false;
     this.#ws = new WebSocket(url);

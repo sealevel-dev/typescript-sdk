@@ -1,5 +1,5 @@
-export * from "./api/client";
-export * from "./api/types";
+export * from "./api/v1/client";
+export * from "./api/v1/types";
 export * from "./realtime/client";
 export * from "./realtime/close-code";
 export * from "./realtime/types/client";
