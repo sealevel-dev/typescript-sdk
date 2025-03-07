@@ -1,5 +1,10 @@
 import EventEmitter from "eventemitter3";
-import { type CloseEvent, type ErrorEvent } from "undici-types";
+import {
+  type CloseEvent,
+  type ErrorEvent,
+  type MessageEvent,
+  WebSocket,
+} from "ws";
 import { z } from "zod";
 
 import { type RealtimeCloseCode } from "./close-code";
