@@ -5,12 +5,8 @@
 
 import type { components } from "./schema";
 
-export type V1PoolAsset = components["schemas"]["PoolAsset"];
-export type V1PartialPoolAsset = components["schemas"]["PartialPoolAsset"];
-export type V1PoolAudit = components["schemas"]["PoolAudit"];
-export type V1PoolStats = components["schemas"]["PoolStats"];
-export type V1Pool = components["schemas"]["Pool"];
-export type V1GetPoolsResponse = components["schemas"]["GetPoolsResponse"];
+export type V1GetAssetTopHoldersResponse =
+  components["schemas"]["GetAssetTopHoldersResponse"];
 export type V1ValidatationFieldError =
   components["schemas"]["ValidatationFieldError"];
 export type V1BaseError = components["schemas"]["BaseError"];
@@ -18,6 +14,12 @@ export type V1ValidationError = components["schemas"]["ValidationError"];
 export type V1UnauthorizedError = components["schemas"]["UnauthorizedError"];
 export type V1InternalServerError =
   components["schemas"]["InternalServerError"];
+export type V1PoolAsset = components["schemas"]["PoolAsset"];
+export type V1PartialPoolAsset = components["schemas"]["PartialPoolAsset"];
+export type V1PoolAudit = components["schemas"]["PoolAudit"];
+export type V1PoolStats = components["schemas"]["PoolStats"];
+export type V1Pool = components["schemas"]["Pool"];
+export type V1GetPoolsResponse = components["schemas"]["GetPoolsResponse"];
 export type V1GetRecentPoolsResponse =
   components["schemas"]["GetRecentPoolsResponse"];
 export type V1RecentPoolsSortBy = components["schemas"]["RecentPoolsSortBy"];
@@ -25,3 +27,11 @@ export type V1TopTradedPoolsResponse =
   components["schemas"]["TopTradedPoolsResponse"];
 export type V1TopTradedPoolsInterval =
   components["schemas"]["TopTradedPoolsInterval"];
+export type V1SearchPoolsResponse =
+  components["schemas"]["SearchPoolsResponse"];
+export type V1SwapAction = components["schemas"]["SwapAction"];
+export type V1ProvideAction = components["schemas"]["ProvideAction"];
+export type V1RemoveAction = components["schemas"]["RemoveAction"];
+export type V1Action = components["schemas"]["Action"];
+export type V1GetPoolActionsResponse =
+  components["schemas"]["GetPoolActionsResponse"];

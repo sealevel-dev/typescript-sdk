@@ -21,8 +21,16 @@ export type TopTradedPoolsRealtimeEvent = {
   pools: V1Pool[];
 };
 
+export type AssetPriceRealtimeEvent = {
+  type: "price";
+  asset_id: string;
+  block_id: number;
+  price_usd: number;
+};
+
 export type RealtimeEvent =
   | PoolCreatedRealtimeEvent
   | PoolUpdatedRealtimeEvent
   | PoolGraduatedRealtimeEvent
-  | TopTradedPoolsRealtimeEvent;
+  | TopTradedPoolsRealtimeEvent
+  | AssetPriceRealtimeEvent;

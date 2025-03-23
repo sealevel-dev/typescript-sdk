@@ -6,6 +6,23 @@
 /* eslint-disable */
 
 export interface paths {
+  "/assets/{assetAddress}/top-holders": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** @description Get the top 100 holders of an asset. */
+    get: operations["getAssetTopHolders"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/pools/assets": {
     parameters: {
       query?: never;
@@ -57,10 +74,80 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/pools/search": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** @description Search for pools by name or symbol. */
+    get: operations["searchPools"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/pools/{poolAddress}/actions": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** @description Get actions for a pool. */
+    get: operations["getPoolActions"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    GetAssetTopHoldersResponse: {
+      items: {
+        address: string;
+        amount: number;
+        tags: string[];
+      }[];
+      count: number;
+    };
+    ValidatationFieldError: {
+      /** @example username */
+      path: string;
+      message: string;
+    };
+    BaseError: {
+      code: string;
+      message: string;
+    };
+    ValidationError: components["schemas"]["BaseError"] & {
+      /** @enum {string} */
+      code?: "validation_failed";
+      /** @enum {string} */
+      message?: "Validation failed";
+      field_errors: components["schemas"]["ValidatationFieldError"][];
+    };
+    UnauthorizedError: components["schemas"]["BaseError"] & {
+      /** @enum {string} */
+      code?: "unauthorized";
+      /** @enum {string} */
+      message?: "Unauthorized";
+    };
+    InternalServerError: components["schemas"]["BaseError"] & {
+      /** @enum {string} */
+      code?: "internal_server_error";
+      /** @enum {string} */
+      message?: "Internal server error";
+    };
     PoolAsset: {
       address: string;
       name: string;
@@ -124,34 +211,6 @@ export interface components {
     GetPoolsResponse: {
       items: components["schemas"]["Pool"][];
     };
-    ValidatationFieldError: {
-      /** @example username */
-      path: string;
-      message: string;
-    };
-    BaseError: {
-      code: string;
-      message: string;
-    };
-    ValidationError: components["schemas"]["BaseError"] & {
-      /** @enum {string} */
-      code?: "validation_failed";
-      /** @enum {string} */
-      message?: "Validation failed";
-      field_errors: components["schemas"]["ValidatationFieldError"][];
-    };
-    UnauthorizedError: components["schemas"]["BaseError"] & {
-      /** @enum {string} */
-      code?: "unauthorized";
-      /** @enum {string} */
-      message?: "Unauthorized";
-    };
-    InternalServerError: components["schemas"]["BaseError"] & {
-      /** @enum {string} */
-      code?: "internal_server_error";
-      /** @enum {string} */
-      message?: "Internal server error";
-    };
     GetRecentPoolsResponse: {
       items: components["schemas"]["Pool"][];
       total: number;
@@ -178,6 +237,76 @@ export interface components {
     };
     /** @enum {string} */
     TopTradedPoolsInterval: "5m" | "1h" | "6h" | "24h";
+    SearchPoolsResponse: {
+      items: components["schemas"]["Pool"][];
+      total: number;
+      next: number;
+    };
+    SwapAction: {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      type: "swap";
+      block_id: number;
+      txn_hash: string;
+      timestamp: string;
+      id: string;
+      trader_address: string;
+      offer_asset_address: string;
+      offer_amount: number;
+      offer_asset_price_usd: number;
+      return_asset_address: string;
+      return_amount: number;
+      return_asset_price_usd: number;
+      volume_usd: number;
+    };
+    ProvideAction: {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      type: "provide";
+      block_id: number;
+      txn_hash: string;
+      timestamp: string;
+      id: string;
+      trader_address: string;
+      offer_asset_address: string;
+      offer_amount: number;
+      offer_asset_price_usd: number;
+      return_asset_address: string;
+      return_amount: number;
+      return_asset_price_usd: number;
+      volume_usd: number;
+    };
+    RemoveAction: {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      type: "remove";
+      block_id: number;
+      txn_hash: string;
+      timestamp: string;
+      id: string;
+      trader_address: string;
+      offer_asset_address: string;
+      offer_amount: number;
+      offer_asset_price_usd: number;
+      return_asset_address: string;
+      return_amount: number;
+      return_asset_price_usd: number;
+      volume_usd: number;
+    };
+    Action:
+      | components["schemas"]["SwapAction"]
+      | components["schemas"]["ProvideAction"]
+      | components["schemas"]["RemoveAction"];
+    GetPoolActionsResponse: {
+      items: components["schemas"]["Action"][];
+      next?: string;
+    };
   };
   responses: never;
   parameters: never;
@@ -187,6 +316,55 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+  getAssetTopHolders: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        assetAddress: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Ok */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GetAssetTopHoldersResponse"];
+        };
+      };
+      /** @description Bad request */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ValidationError"];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["UnauthorizedError"];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["InternalServerError"];
+        };
+      };
+    };
+  };
   getAssetPools: {
     parameters: {
       query: {
@@ -332,6 +510,113 @@ export interface operations {
         };
       };
       /** @description Internal Server Error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["InternalServerError"];
+        };
+      };
+    };
+  };
+  searchPools: {
+    parameters: {
+      query: {
+        query: string;
+        limit?: number;
+        offset?: number | null;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Ok */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["SearchPoolsResponse"];
+        };
+      };
+      /** @description Bad request */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ValidationError"];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["UnauthorizedError"];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["InternalServerError"];
+        };
+      };
+    };
+  };
+  getPoolActions: {
+    parameters: {
+      query?: {
+        offset?: string;
+        trader_address?: string;
+        /** @description Only return actions after this date. */
+        after?: string | null;
+        /** @description Only return actions prior to this date. */
+        before?: string | null;
+      };
+      header?: never;
+      path: {
+        poolAddress: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Ok */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GetPoolActionsResponse"];
+        };
+      };
+      /** @description Bad request */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ValidationError"];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["UnauthorizedError"];
+        };
+      };
+      /** @description Internal server error */
       500: {
         headers: {
           [name: string]: unknown;
