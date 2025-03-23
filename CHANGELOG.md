@@ -1,5 +1,11 @@
 # @sealevel-dev/sdk
 
+## 0.1.0
+
+### Minor Changes
+
+- 2912034: New v1 API endpoints and Realtime price updates
+
 ## 0.0.5
 
 ### Patch Changes
