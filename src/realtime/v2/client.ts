@@ -7,38 +7,42 @@ import {
 } from "ws";
 import { z } from "zod";
 
-import { type RealtimeCloseCode } from "./close-code";
-import { REALTIME_DEFAULT_URL } from "./const";
-import { type RealtimeClientMessage } from "./types/client";
-import { type RealtimeServerMessage } from "./types/server";
-import { type RealtimeTopic } from "./types/topics";
+import { type RealtimeV2CloseCode } from "./close-code";
+import { REALTIME_V2_DEFAULT_URL } from "./const";
+import { type RealtimeV2ClientMessage } from "./types/client";
+import { type RealtimeV2ServerMessage } from "./types/server";
+import { type RealtimeV2Topic } from "./types/topics";
 
 const realtimeClientOptionsSchema = z.object({
-  url: z.string().default(REALTIME_DEFAULT_URL),
+  url: z.string().default(REALTIME_V2_DEFAULT_URL),
   accessToken: z.string(),
   reconnect: z.boolean().default(true),
   reconnectInterval: z.number().default(1000),
 });
-export type RealtimeClientOptions = z.input<typeof realtimeClientOptionsSchema>;
-type ParsedRealtimeClientOptions = z.output<typeof realtimeClientOptionsSchema>;
+export type RealtimeV2ClientOptions = z.input<
+  typeof realtimeClientOptionsSchema
+>;
+type ParsedRealtimeV2ClientOptions = z.output<
+  typeof realtimeClientOptionsSchema
+>;
 
-export type RealtimeCloseEvent = CloseEvent & {
-  code: (typeof RealtimeCloseCode)[keyof typeof RealtimeCloseCode];
+export type RealtimeV2CloseEvent = CloseEvent & {
+  code: (typeof RealtimeV2CloseCode)[keyof typeof RealtimeV2CloseCode];
 };
 
-export type RealtimeClientEvents = {
-  disconnect: (event?: RealtimeCloseEvent) => void;
+export type RealtimeV2ClientEvents = {
+  disconnect: (event?: RealtimeV2CloseEvent) => void;
   connect: () => void;
   error: (error: Error) => void;
-  message: (message: RealtimeServerMessage) => void;
+  message: (message: RealtimeV2ServerMessage) => void;
 };
 
-export class RealtimeClient extends EventEmitter<RealtimeClientEvents> {
-  #options: ParsedRealtimeClientOptions;
+export class RealtimeV2Client extends EventEmitter<RealtimeV2ClientEvents> {
+  #options: ParsedRealtimeV2ClientOptions;
   #userDisconnected = false;
   #ws: WebSocket | null = null;
 
-  constructor(options: RealtimeClientOptions) {
+  constructor(options: RealtimeV2ClientOptions) {
     super();
     this.#options = realtimeClientOptionsSchema.parse(options ?? {});
   }
@@ -59,7 +63,7 @@ export class RealtimeClient extends EventEmitter<RealtimeClientEvents> {
     this.#ws.addEventListener("open", this.#handleOpen);
   };
 
-  send = (message: RealtimeClientMessage) => {
+  send = (message: RealtimeV2ClientMessage) => {
     if (!this.#ws) {
       throw new Error(
         "send: websocket not initialized, please connect before trying to send a message",
@@ -69,11 +73,11 @@ export class RealtimeClient extends EventEmitter<RealtimeClientEvents> {
     this.#ws.send(JSON.stringify(message));
   };
 
-  subscribe = (topics: RealtimeTopic[]) => {
+  subscribe = (topics: RealtimeV2Topic[]) => {
     this.send({ type: "subscribe", topics });
   };
 
-  unsubscribe = (topics: RealtimeTopic[]) => {
+  unsubscribe = (topics: RealtimeV2Topic[]) => {
     this.send({ type: "unsubscribe", topics });
   };
 
@@ -117,7 +121,7 @@ export class RealtimeClient extends EventEmitter<RealtimeClientEvents> {
     this.#ws = null;
     this.emit("disconnect", {
       ...event,
-      code: event.code as RealtimeCloseEvent["code"],
+      code: event.code as RealtimeV2CloseEvent["code"],
     });
 
     if (this.#options.reconnect) {
@@ -137,7 +141,7 @@ export class RealtimeClient extends EventEmitter<RealtimeClientEvents> {
 
     let data;
     try {
-      data = JSON.parse(event.data) as RealtimeServerMessage;
+      data = JSON.parse(event.data) as RealtimeV2ServerMessage;
     } catch (error) {
       this.emit("error", new Error("Invalid message format", { cause: error }));
       return;
@@ -147,6 +151,6 @@ export class RealtimeClient extends EventEmitter<RealtimeClientEvents> {
   };
 }
 
-export function createRealtimeClient(options: RealtimeClientOptions) {
-  return new RealtimeClient(options);
+export function createRealtimeV2Client(options: RealtimeV2ClientOptions) {
+  return new RealtimeV2Client(options);
 }

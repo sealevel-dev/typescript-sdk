@@ -1,4 +1,4 @@
-export const RealtimeCloseCode = {
+export const RealtimeV2CloseCode = {
   InvalidMessage: 4000,
   UnknownOperation: 4001,
   InvalidParams: 4002,
