@@ -1,5 +1,11 @@
 # @sealevel-dev/sdk
 
+## 1.0.0
+
+### Major Changes
+
+- bbbcf2c: Realtime V2 support
+
 ## 0.1.0
 
 ### Minor Changes
