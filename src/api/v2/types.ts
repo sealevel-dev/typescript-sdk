@@ -6,28 +6,30 @@ export type V2FirstPool = {
 export type V2AssetAudit = {
   mint_authority_disabled: boolean | null;
   freeze_authority_disabled: boolean | null;
+  high_single_ownership: boolean | null;
+  permanent_control_enabled: boolean | null;
   top_holders_percentage: number | null;
   dev_migration_count: number | null;
 };
 
 export type V2AssetStats = {
-  price_change: number | null;
-  holder_change: number | null;
-  liquidity_change: number | null;
-  volume_change: number | null;
-  buy_volume: number | null;
-  sell_volume: number | null;
-  buy_organic_volume: number | null;
-  sell_organic_volume: number | null;
-  buy_count: number | null;
-  sell_count: number | null;
-  trader_count: number | null;
-  organic_buyer_count: number | null;
-  net_buyer_count: number | null;
+  price_change: number;
+  holder_change: number;
+  liquidity_change: number;
+  volume_change: number;
+  buy_volume_usd: number;
+  sell_volume_usd: number;
+  buy_organic_volume_usd: number;
+  sell_organic_volume_usd: number;
+  buy_count: number;
+  sell_count: number;
+  trader_count: number;
+  organic_buyer_count: number;
+  net_buyer_count: number;
 };
 
 export type V2Asset = {
-  id: string;
+  mint: string;
   name: string;
   symbol: string;
   icon_url: string | null;
@@ -38,13 +40,13 @@ export type V2Asset = {
   circulating_supply: number | null;
   total_supply: number | null;
   token_program_address: string;
+  mint_authority_address: string | null;
+  freeze_authority_address: string | null;
   launchpad: string | null;
   partner_config_address: string | null;
   first_pool: V2FirstPool | null;
   holder_count: number | null;
-  audit: V2AssetAudit | null;
-  organic_score: number | null;
-  organic_score_label: string | null;
+  audit: V2AssetAudit;
   tags: string[];
   cexes: string[];
   graduated_pool_id: string | null;
@@ -54,21 +56,21 @@ export type V2Asset = {
   price_usd: number | null;
   price_block_id: number | null;
   liquidity: number | null;
-  stats_5m: V2AssetStats | null;
-  stats_1h: V2AssetStats | null;
-  stats_6h: V2AssetStats | null;
-  stats_24h: V2AssetStats | null;
+  stats_5m: V2AssetStats;
+  stats_1h: V2AssetStats;
+  stats_6h: V2AssetStats;
+  stats_24h: V2AssetStats;
 };
 
 export type V2Pool = {
-  id: string;
+  address: string;
   chain: string;
   dex: string;
   type: string;
-  quote_asset_mint: string | null;
+  quote_asset_mint: string;
   created_at: string | null;
   liquidity: number | null;
-  volume_24h: number | null;
+  volume_24h: number;
   updated_at: string | null;
   base_asset: V2Asset;
 };
@@ -80,7 +82,7 @@ export type V2AssetPrice = {
 };
 
 export type V2Transaction = {
-  timestamp: string;
+  pool_address: string;
   asset_mint: string;
   type: string;
   price_usd: number;
@@ -92,5 +94,5 @@ export type V2Transaction = {
   is_mev: boolean;
   is_mrp: boolean;
   is_valid_price: boolean;
-  pool_id: string;
+  timestamp: string;
 };
