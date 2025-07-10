@@ -1,7 +1,7 @@
 {
-  "name": "@sealevel-dev/sdk",
+  "name": "@solstream/sdk",
   "version": "0.1.0",
-  "description": "TypeScript SDK for Sealevel.",
+  "description": "TypeScript SDK for Solstream.",
   "type": "module",
   "exports": {
     "types": "./dist/index.d.ts",
@@ -26,7 +26,7 @@
     "sdk",
     "api-client",
     "realtime",
-    "sealevel"
+    "solstream"
   ],
   "license": "MIT",
   "packageManager": "pnpm@9.15.0",
