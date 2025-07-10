@@ -1,5 +1,11 @@
 # @sealevel-dev/sdk
 
+## 1.1.0
+
+### Minor Changes
+
+- 6f9d756: Breaking API/Realtime v2 changes
+
 ## 1.0.0
 
 ### Major Changes
